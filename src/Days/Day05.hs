@@ -7,7 +7,6 @@ module Days.Day05
 import Data.Attoparsec.Text (Parser, char, choice, endOfLine, sepBy)
 import Data.List (foldl')
 import qualified Data.Set as Set
-
 import qualified Program.RunDay as R (runDay, runDayPart)
 
 runDay :: Bool -> String -> IO ()

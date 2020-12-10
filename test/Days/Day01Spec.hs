@@ -9,9 +9,9 @@ spec = do
   describe "partA" $ do
     it "calculates the correct answer" $ do
        result <- runDayPartA "input/Day01.txt"
-       result `shouldBe` Just 1016964
+       result `shouldBe` 1016964
   describe "partB" $ do
     it "calculates the correct answer" $ do
       result <- runDayPartB "input/Day01.txt"
-      result `shouldBe` Just 182588480
+      result `shouldBe` 182588480
 

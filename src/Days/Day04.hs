@@ -4,8 +4,6 @@ module Days.Day04
   , runDayPartB
   ) where
 
-import Prelude hiding (take)
-
 import Control.Applicative (Alternative((<|>)))
 import Data.Attoparsec.Text
   ( Parser
@@ -29,7 +27,7 @@ import Data.Either (isRight)
 import Data.List (foldl')
 import Data.Maybe (isJust)
 import Data.Text (pack)
-
+import Prelude hiding (take)
 import qualified Program.RunDay as R (runDay, runDayPart)
 
 runDay :: Bool -> String -> IO ()

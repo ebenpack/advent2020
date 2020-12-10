@@ -8,7 +8,6 @@ import Data.Attoparsec.Text (Parser, endOfLine, letter, many1, sepBy)
 import Data.List (foldl')
 import Data.Set (Set)
 import qualified Data.Set as Set
-
 import qualified Program.RunDay as R (runDay, runDayPart)
 
 runDay :: Bool -> String -> IO ()

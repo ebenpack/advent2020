@@ -15,7 +15,6 @@ import Data.Attoparsec.Text
   , space
   )
 import Data.Text (Text, index, pack, unpack)
-
 import qualified Program.RunDay as R (runDay, runDayPart)
 
 runDay :: Bool -> String -> IO ()

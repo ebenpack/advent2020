@@ -4,9 +4,8 @@ module Days.Day09
   , runDayPartB
   ) where
 
-import Data.List
 import Data.Attoparsec.Text (Parser, decimal, endOfLine, sepBy)
-
+import Data.List (tails)
 import qualified Program.RunDay as R (runDay, runDayPart)
 
 runDay :: Bool -> String -> IO ()

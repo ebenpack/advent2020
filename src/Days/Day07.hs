@@ -1,4 +1,8 @@
-module Days.Day07 where -- (runDay, runDayPartA, runDayPartB) where
+module Days.Day07
+  ( runDay
+  , runDayPartA
+  , runDayPartB
+  ) where
 
 import Control.Applicative (Alternative((<|>)))
 import Data.Attoparsec.Text
@@ -16,7 +20,6 @@ import Data.Attoparsec.Text
 import Data.List (foldl')
 import qualified Data.Map.Strict as Map
 import qualified Data.Set as Set
-
 import qualified Program.RunDay as R (runDay, runDayPart)
 
 runDay :: Bool -> String -> IO ()
@@ -34,15 +37,15 @@ inputParser = do
   bags <- bagDef `sepBy` endOfLine
   pure $ foldl' joinBags Map.empty (concat bags)
   where
-    joinBags m b = Map.alter (blah b) (color b) m
-    blah b v =
-      case v of
-        Nothing -> Just b
-        Just v ->
+    joinBags m b = Map.alter (mergeBags b) (color b) m
+    mergeBags b1 mb =
+      case mb of
+        Nothing -> Just b1
+        Just b2 ->
           Just $
-          v
-            { containedBy = containedBy v ++ containedBy b
-            , contains = contains v ++ contains b
+          b2
+            { containedBy = containedBy b2 ++ containedBy b1
+            , contains = contains b2 ++ contains b1
             }
     bagDef = do
       t <- bagType <* string " contain "
