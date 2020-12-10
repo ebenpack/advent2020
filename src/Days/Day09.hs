@@ -5,17 +5,8 @@ module Days.Day09
   ) where
 
 import Data.List
-import Data.Map.Strict (Map)
-import qualified Data.Map.Strict as Map
-import Data.Maybe
-import Data.Set (Set)
-import qualified Data.Set as Set
-import Data.Vector (Vector)
-import qualified Data.Vector as Vec
-import qualified Util.Util as U
-
 import Data.Attoparsec.Text (Parser, decimal, endOfLine, sepBy)
-import Data.Void
+
 import qualified Program.RunDay as R (runDay, runDayPart)
 
 runDay :: Bool -> String -> IO ()
@@ -56,7 +47,7 @@ partA xmas =
 partB :: Input -> OutputB
 partB xmas = go xmas
   where
-    go ls@(_:xs) =
+    go ls@(_:xs) = do
       case contiguousSequence target ls [] 0 of
         Nothing -> go xs
         Just cs ->
