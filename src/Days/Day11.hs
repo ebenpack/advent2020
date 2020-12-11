@@ -23,9 +23,7 @@ runDayPartB = R.runDayPart inputParser partB
 inputParser :: Parser Input
 inputParser = do
   seatLayoutMap <- coordinateParser charToSeat 0
-  let maxX = maximum $ map fst $ Map.keys seatLayoutMap
-  let maxY = maximum $ map snd $ Map.keys seatLayoutMap
-  pure $ seatLayoutMap
+  pure seatLayoutMap
 
 charToSeat :: Char -> Maybe Seat
 charToSeat '.' = Just Floor
