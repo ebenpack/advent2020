@@ -1,5 +1,3 @@
-{-# LANGUAGE TypeApplications #-}
-
 module Days.Day11
   ( runDay
   , runDayPartA
