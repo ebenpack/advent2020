@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b275381426c9ffe1a385441fb70e71069221ed9840c58427fbbe4c6167f92314
+-- hash: ad532264525f423916208d548b7503526b726462e983552ff75b1ef1eb12f209
 
 name:           advent20
 version:        0.1.0.0
@@ -100,6 +100,8 @@ test-suite advent20-test
       Days.Day07Spec
       Days.Day08Spec
       Days.Day09Spec
+      Days.Day10Spec
+      Days.Day11Spec
       Paths_advent20
   hs-source-dirs:
       test
