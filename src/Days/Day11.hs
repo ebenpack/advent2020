@@ -81,6 +81,9 @@ runSimulationToCompletion simulationStep findAdjacentSeats = go
             then seatLayoutMap
             else go nextSeatLayoutMap
 
+adjacentPositions :: [(Int, Int)]
+adjacentPositions = [(x, y) | x <- [-1 .. 1], y <- [-1 .. 1], x /= 0 || y /= 0]
+
 partA :: Input -> OutputA
 partA seatLayoutMap =
   Map.size $
@@ -90,9 +93,7 @@ partA seatLayoutMap =
     findAdjacentSeats :: SeatLayoutMap -> Point -> [Seat]
     findAdjacentSeats seatLayoutMap (xCoord, yCoord) =
       [ seatLayoutMap Map.! (xCoord + x, yCoord + y)
-      | x <- [-1 .. 1]
-      , y <- [-1 .. 1]
-      , x /= 0 || y /= 0
+      | (x, y) <- adjacentPositions
       , isJust $ seatLayoutMap Map.!? (xCoord + x, yCoord + y)
       ]
     simulationStep :: [Seat] -> Seat -> Seat
@@ -118,13 +119,9 @@ partB seatLayoutMap =
         Just seat -> seat
     visibleSeats :: SeatLayoutMap -> Point -> [Seat]
     visibleSeats seatLayoutMap p =
-      let steps =
-            [ \(a, b) -> (a + x, b + y)
-            | x <- [-1 .. 1]
-            , y <- [-1 .. 1]
-            , x /= 0 || y /= 0
-            ]
-       in [rayTrace seatLayoutMap p s | s <- steps]
+      [ rayTrace seatLayoutMap p (\(a, b) -> (a + x, b + y))
+      | (x, y) <- adjacentPositions
+      ]
     simulationStep :: [Seat] -> Seat -> Seat
     simulationStep adjacentSeats seat
       | seatIsEmpty seat && not (any seatIsOccupied adjacentSeats) =
