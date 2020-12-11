@@ -21,9 +21,7 @@ runDayPartB = R.runDayPart inputParser partB
 
 ------------ PARSER ------------
 inputParser :: Parser Input
-inputParser = do
-  seatLayoutMap <- coordinateParser charToSeat 0
-  pure seatLayoutMap
+inputParser = coordinateParser charToSeat 0
 
 charToSeat :: Char -> Maybe Seat
 charToSeat '.' = Just Floor
@@ -64,11 +62,10 @@ runSimulationStep ::
   -> (SeatLayoutMap -> Point -> [Seat])
   -> SeatLayoutMap
   -> SeatLayoutMap
-runSimulationStep simulationStep findAdjacentSeats seatLayoutMap =
+runSimulationStep simulationStep findAdjacentSeats =
   Map.mapWithKey
     (\coords seat ->
-       simulationStep (findAdjacentSeats seatLayoutMap coords) seat) $
-  seatLayoutMap
+       simulationStep (findAdjacentSeats seatLayoutMap coords) seat)
 
 runSimulationToCompletion ::
      ([Seat] -> Seat -> Seat)
