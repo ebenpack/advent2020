@@ -6,6 +6,7 @@ module Days.Day05
 
 import Data.Attoparsec.Text (Parser, char, choice, endOfLine, sepBy)
 import Data.List (foldl')
+import Data.Set (Set)
 import qualified Data.Set as Set
 import qualified Program.RunDay as R (runDay, runDayPart)
 
@@ -22,11 +23,14 @@ runDayPartB = R.runDayPart inputParser partB
 inputParser :: Parser Input
 inputParser = boardingPass `sepBy` endOfLine
   where
+    boardingPass :: Parser BoardingPass
     boardingPass =
       BoardingPass <$> fb <*> fb <*> fb <*> fb <*> fb <*> fb <*> fb <*> lr <*>
       lr <*>
       lr
+    fb :: Parser FB
     fb = choice [char 'F' >> pure F, char 'B' >> pure B]
+    lr :: Parser LR
     lr = choice [char 'L' >> pure L, char 'R' >> pure R]
 
 ------------ TYPES ------------
@@ -87,6 +91,7 @@ partA = maximum . (boardingPassToSeatId <$>)
 partB :: Input -> OutputB
 partB boardingpasses = head unoccupiedseats
   where
+    unoccupiedseats :: [Int]
     unoccupiedseats =
       [ coordsToSeatId (row, col)
       | row <- [0 .. 127]
@@ -95,6 +100,7 @@ partB boardingpasses = head unoccupiedseats
          in not (Set.member seatId occupiedSeats) &&
             all (`Set.member` occupiedSeats) [seatId + 1, seatId - 1]
       ]
+    occupiedSeats :: Set Int
     occupiedSeats =
       foldl'
         (\s x -> Set.insert (boardingPassToSeatId x) s)

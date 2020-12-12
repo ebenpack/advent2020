@@ -7,6 +7,7 @@ module Days.Day12
 import Control.Applicative (Alternative((<|>)))
 import Data.Attoparsec.Text (Parser, decimal, endOfLine, sepBy, string)
 import Data.List (foldl')
+import Data.Text (Text)
 import qualified Program.RunDay as R (runDay, runDayPart)
 
 runDay :: Bool -> String -> IO ()
@@ -22,17 +23,27 @@ runDayPartB = R.runDayPart inputParser partB
 inputParser :: Parser Input
 inputParser = instruction `sepBy` endOfLine
   where
+    instruction :: Parser Instruction
     instruction = n <|> s <|> e <|> w <|> l <|> r <|> f
+    inst :: Text -> (Int -> Instruction) -> Parser Instruction
     inst s con = do
       u <- string s *> unit
       pure $ con u
+    unit :: Parser Int
     unit = decimal
+    n :: Parser Instruction
     n = inst "N" N
+    s :: Parser Instruction
     s = inst "S" S
+    e :: Parser Instruction
     e = inst "E" E
+    w :: Parser Instruction
     w = inst "W" W
+    l :: Parser Instruction
     l = inst "L" L
+    r :: Parser Instruction
     r = inst "R" R
+    f :: Parser Instruction
     f = inst "F" F
 
 ------------ TYPES ------------

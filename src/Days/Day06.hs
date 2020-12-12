@@ -23,7 +23,9 @@ runDayPartB = R.runDayPart inputParser partB
 inputParser :: Parser Input
 inputParser = group `sepBy` endOfLine
   where
+    group :: Parser [Set Char]
     group = person `sepBy` endOfLine
+    person :: Parser (Set Char)
     person = do
       answers <- many1 letter
       pure $ Set.fromList answers
@@ -47,12 +49,14 @@ collapseGroupSets = foldl' (flip Set.union) Set.empty
 partA :: Input -> OutputA
 partA = sum . groupAnswerCounts
   where
+    groupAnswerCounts :: [[Set Char]] -> [Int]
     groupAnswerCounts = map (Set.size . collapseGroupSets)
 
 ------------ PART B ------------
 partB :: Input -> OutputB
 partB = sum . map (length . allAnswered)
   where
+    allAnswered :: [Set Char] -> [Char]
     allAnswered group =
       [ answer
       | answer <- Set.toList (collapseGroupSets group)

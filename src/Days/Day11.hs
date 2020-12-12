@@ -63,7 +63,9 @@ runSimulationStep ::
   -> SeatLayoutMap
   -> SeatLayoutMap
 runSimulationStep simulationStep findAdjacentSeats seatLayoutMap =
-  Map.mapWithKey (simulationStep . findAdjacentSeats seatLayoutMap) seatLayoutMap
+  Map.mapWithKey
+    (simulationStep . findAdjacentSeats seatLayoutMap)
+    seatLayoutMap
 
 runSimulationToCompletion ::
      ([Seat] -> Seat -> Seat)
@@ -72,6 +74,7 @@ runSimulationToCompletion ::
   -> SeatLayoutMap
 runSimulationToCompletion simulationStep findAdjacentSeats = go
   where
+    go :: SeatLayoutMap -> SeatLayoutMap
     go seatLayoutMap =
       let nextSeatLayoutMap =
             runSimulationStep simulationStep findAdjacentSeats seatLayoutMap

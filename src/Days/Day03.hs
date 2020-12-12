@@ -58,6 +58,7 @@ type OutputB = Int
 findTreesInSlope :: Input -> Step -> OutputA
 findTreesInSlope sledMap (xstep, ystep) = go 0 (0, 0)
   where
+    go :: Int -> (Int, Int) -> Int
     go n pos@(x, y) =
       let nextPos = (xstep x, ystep y)
        in case unMap sledMap pos of

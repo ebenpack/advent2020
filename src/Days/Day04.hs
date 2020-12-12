@@ -102,9 +102,12 @@ type OutputB = Int
 partA :: Input -> OutputA
 partA = length . passportsWithAllRequiredFields
   where
+    passportsWithAllRequiredFields :: [Passport] -> [Passport]
     passportsWithAllRequiredFields = filter passPortHasAllRequiredFields
+    passPortHasAllRequiredFields :: Passport -> Bool
     passPortHasAllRequiredFields passport =
       all (isJust . ($ passport)) requiredFields
+    requiredFields :: [Passport -> Maybe String]
     requiredFields = [byr, iyr, eyr, hgt, hcl, ecl, pid]
 
 ------------ PART B ------------

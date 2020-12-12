@@ -37,7 +37,9 @@ inputParser = do
   bags <- bagDef `sepBy` endOfLine
   pure $ foldl' joinBags Map.empty (concat bags)
   where
+    joinBags :: Map.Map String Bag -> Bag -> Map.Map String Bag
     joinBags m b = Map.alter (mergeBags b) (color b) m
+    mergeBags :: Bag -> Maybe Bag -> Maybe Bag
     mergeBags b1 mb =
       case mb of
         Nothing -> Just b1
@@ -47,6 +49,7 @@ inputParser = do
             { containedBy = containedBy b2 ++ containedBy b1
             , contains = contains b2 ++ contains b1
             }
+    bagDef :: Parser [Bag]
     bagDef = do
       t <- bagType <* string " contain "
       bags <- (empty <|> contain) <* char '.'
@@ -55,15 +58,20 @@ inputParser = do
               (\(c, n) -> Bag {color = c, contains = [], containedBy = [(t, n)]})
               bags
       pure $ Bag {color = t, containedBy = [], contains = bags} : childBags
+    bagType :: Parser String
     bagType = do
       t <- manyTill (word <* space) (string "bags" <|> string "bag")
       pure $ unwords t
+    word :: Parser String
     word = many1 letter
+    empty :: Parser [(String, Int)]
     empty = string "no other bags" >> pure []
+    numBags :: Parser (String, Int)
     numBags = do
       n <- decimal <* space
       b <- bagType
       pure (b, n)
+    contain :: Parser [(String, Int)]
     contain = numBags `sepBy` string ", "
 
 ------------ TYPES ------------
@@ -85,6 +93,7 @@ type OutputB = Int
 solveThingusA :: String -> Input -> Set.Set String
 solveThingusA target bagMap = go Set.empty target
   where
+    go :: Set.Set String -> String -> Set.Set String
     go visited current =
       let nextBag = Map.lookup current bagMap
           toVisit = maybe [] ((fst <$>) . containedBy) nextBag

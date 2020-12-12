@@ -32,7 +32,7 @@ type OutputB = Int
 pairs :: [a] -> [(a, a)]
 pairs l = [(x, y) | (x:ys) <- tails l, y <- ys]
 
-partA :: Input -> OutputA --
+partA :: Input -> OutputA
 partA xmas =
   head $
   head -- double head... very safe, lol
@@ -46,6 +46,9 @@ partA xmas =
 partB :: Input -> OutputB
 partB xmas = go xmas
   where
+    target :: OutputA
+    target = partA xmas
+    go :: Input -> OutputA
     go ls@(_:xs) = do
       case contiguousSequence target ls [] 0 of
         Nothing -> go xs
@@ -53,6 +56,7 @@ partB xmas = go xmas
           if length cs >= 2
             then minimum cs + maximum cs
             else go xs
+    contiguousSequence :: Int -> Input -> [OutputB] -> Int -> Maybe [OutputB]
     contiguousSequence target [] acc n =
       if n == target
         then Just acc
@@ -61,4 +65,3 @@ partB xmas = go xmas
       | n == target = Just acc
       | n > target = Nothing
       | otherwise = contiguousSequence target xs (x : acc) (n + x)
-    target = partA xmas

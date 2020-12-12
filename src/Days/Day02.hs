@@ -30,6 +30,7 @@ runDayPartB = R.runDayPart inputParser partB
 inputParser :: Parser Input
 inputParser = parsePassword `sepBy` endOfLine
   where
+    parsePassword :: Parser Password
     parsePassword = do
       firstDigit <- decimal <* char '-'
       secondDigit <- decimal <* space

@@ -4,7 +4,7 @@ module Days.Day10
   , runDayPartB
   ) where
 
-import Control.Monad.State (MonadState(get), evalState, forM, modify)
+import Control.Monad.State (MonadState(get), State, evalState, forM, modify)
 import Data.Attoparsec.Text (Parser, decimal, endOfLine, sepBy)
 import Data.List (sort)
 import qualified Data.Map.Strict as Map
@@ -34,7 +34,9 @@ type OutputB = Integer
 partA :: Input -> OutputA
 partA xs = countNJoltDiffs 1 0 input * countNJoltDiffs 3 0 input
   where
+    input :: [Integer]
     input = 0 : sort xs ++ [maximum xs + 3]
+    countNJoltDiffs :: Integer -> Integer -> [Integer] -> Integer
     countNJoltDiffs _ acc [] = acc
     countNJoltDiffs _ acc [_] = acc
     countNJoltDiffs n acc (x:y:xs) =
@@ -46,8 +48,11 @@ partA xs = countNJoltDiffs 1 0 input * countNJoltDiffs 3 0 input
 partB :: Input -> OutputB
 partB xs = answer
   where
+    input :: [Integer]
     input = 0 : sort xs ++ [maximum xs + 3]
+    answer :: Integer
     answer = evalState (go 0 input) Map.empty
+    go :: Integer -> [Integer] -> State (Map.Map Integer Integer) Integer
     go _ [] = pure 0
     go n (x:xs)
       | x - n > 3 = return 0
