@@ -16,6 +16,7 @@ dependencies:
 - containers
 - safe
 - text
+- time
 - mtl
 - vector
 - pointedlist
