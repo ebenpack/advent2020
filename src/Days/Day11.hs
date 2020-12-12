@@ -62,10 +62,8 @@ runSimulationStep ::
   -> (SeatLayoutMap -> Point -> [Seat])
   -> SeatLayoutMap
   -> SeatLayoutMap
-runSimulationStep simulationStep findAdjacentSeats =
-  Map.mapWithKey
-    (\coords seat ->
-       simulationStep (findAdjacentSeats seatLayoutMap coords) seat)
+runSimulationStep simulationStep findAdjacentSeats seatLayoutMap =
+  Map.mapWithKey (simulationStep . findAdjacentSeats seatLayoutMap) seatLayoutMap
 
 runSimulationToCompletion ::
      ([Seat] -> Seat -> Seat)
