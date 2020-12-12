@@ -50,8 +50,8 @@ partB xs = answer
     answer = evalState (go 0 input) Map.empty
     go _ [] = pure 0
     go n (x:xs)
-      | x - n > 3 = return 0
-      | null xs = return 1
+      | x - n > 3 = pure 0
+      | null xs = pure 1
       | otherwise = do
         memo <- get
         case Map.lookup x memo of
