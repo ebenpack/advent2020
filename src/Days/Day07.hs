@@ -18,7 +18,9 @@ import Data.Attoparsec.Text
   , string
   )
 import Data.List (foldl')
+import Data.Map (Map)
 import qualified Data.Map.Strict as Map
+import Data.Set (Set)
 import qualified Data.Set as Set
 import qualified Program.RunDay as R (runDay, runDayPart)
 
@@ -37,7 +39,7 @@ inputParser = do
   bags <- bagDef `sepBy` endOfLine
   pure $ foldl' joinBags Map.empty (concat bags)
   where
-    joinBags :: Map.Map String Bag -> Bag -> Map.Map String Bag
+    joinBags :: Map String Bag -> Bag -> Map String Bag
     joinBags m b = Map.alter (mergeBags b) (color b) m
     mergeBags :: Bag -> Maybe Bag -> Maybe Bag
     mergeBags b1 mb =
@@ -83,17 +85,17 @@ data Bag =
     }
   deriving (Show)
 
-type Input = Map.Map String Bag
+type Input = Map String Bag
 
 type OutputA = Int
 
 type OutputB = Int
 
 ------------ PART A ------------
-solveThingusA :: String -> Input -> Set.Set String
+solveThingusA :: String -> Input -> Set String
 solveThingusA target bagMap = go Set.empty target
   where
-    go :: Set.Set String -> String -> Set.Set String
+    go :: Set String -> String -> Set String
     go visited current =
       let nextBag = Map.lookup current bagMap
           toVisit = maybe [] ((fst <$>) . containedBy) nextBag

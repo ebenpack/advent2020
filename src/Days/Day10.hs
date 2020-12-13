@@ -7,6 +7,7 @@ module Days.Day10
 import Control.Monad.State (MonadState(get), State, evalState, forM, modify)
 import Data.Attoparsec.Text (Parser, decimal, endOfLine, sepBy)
 import Data.List (sort)
+import Data.Map (Map)
 import qualified Data.Map.Strict as Map
 import qualified Program.RunDay as R (runDay, runDayPart)
 
@@ -52,7 +53,7 @@ partB xs = answer
     input = 0 : sort xs ++ [maximum xs + 3]
     answer :: Integer
     answer = evalState (go 0 input) Map.empty
-    go :: Integer -> [Integer] -> State (Map.Map Integer Integer) Integer
+    go :: Integer -> [Integer] -> State (Map Integer Integer) Integer
     go _ [] = pure 0
     go n (x:xs)
       | x - n > 3 = pure 0

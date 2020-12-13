@@ -5,6 +5,7 @@ module Days.Day11
   ) where
 
 import Data.Attoparsec.Text (Parser)
+import Data.Map (Map)
 import qualified Data.Map.Strict as Map
 import Data.Maybe (isJust)
 import qualified Program.RunDay as R (runDay, runDayPart)
@@ -48,7 +49,7 @@ seatIsOccupied :: Seat -> Bool
 seatIsOccupied OccupiedSeat = True
 seatIsOccupied _ = False
 
-type SeatLayoutMap = Map.Map Point Seat
+type SeatLayoutMap = Map Point Seat
 
 type Input = SeatLayoutMap
 

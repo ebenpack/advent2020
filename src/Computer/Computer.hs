@@ -1,6 +1,6 @@
 module Computer.Computer where
 
-import Data.Maybe
+import Data.Set (Set)
 import qualified Data.Set as Set
 import Data.Vector (Vector)
 import qualified Data.Vector as Vec
@@ -34,7 +34,7 @@ data ProgramState =
   ProgramState
     { accumulator :: Int
     , instructionPointer :: Int
-    , instructionsRun :: Set.Set Int
+    , instructionsRun :: Set Int
     }
   deriving (Show)
 
