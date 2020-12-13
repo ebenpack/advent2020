@@ -54,12 +54,17 @@ runDay inputParser partA partB verbose inputFile = do
           else throwError $
                "I couldn't read the input! I was expecting it to be at " ++
                inputFile
-      case (parseOnly inputParser . pack $ fileContents) of
+      start <- liftIO getCPUTime
+      let !result = (parseOnly inputParser . pack $ fileContents)
+      case result of
         Left e -> throwError $ "Parser failed to read input. Error " ++ e
         Right i -> do
           when verbose $ do
+            end <- liftIO getCPUTime
             liftIO $ putStrLn "Parser output:"
             liftIO . putStrLn . show $ i
+            let diff = fromIntegral (end - start) / (10 ^ 9) :: Double
+            liftIO $ printf "Parser time: %0.8f milliseconds\n" diff
           return i
   processInput input
   where
@@ -68,8 +73,8 @@ runDay inputParser partA partB verbose inputFile = do
       let !result = f i
       end <- getCPUTime
       print result
-      let diff = fromIntegral (end - start) / (10 ^ 12) :: Double
-      when verbose $ printf "Computation time: %0.3f sec\n" diff
+      let diff = fromIntegral (end - start) / (10 ^ 9) :: Double
+      when verbose $ printf "Computation time: %0.8f milliseconds\n" diff
     processInput (Left x) = putStrLn x
     processInput (Right i) = do
       putStrLn "Part A:"
