@@ -1,18 +1,13 @@
-module Days.Day15 (runDay, runDayPartA, runDayPartB) where
+module Days.Day15
+  ( runDay
+  , runDayPartA
+  , runDayPartB
+  ) where
 
-import Data.List
+import Data.Attoparsec.Text (Parser, char, decimal, sepBy)
 import Data.Map.Strict (Map)
 import qualified Data.Map.Strict as Map
-import Data.Maybe
-import Data.Set (Set)
-import qualified Data.Set as Set
-import Data.Vector (Vector)
-import qualified Data.Vector as Vec
-import qualified Util.Util as U
-
 import qualified Program.RunDay as R (runDay, runDayPart)
-import Data.Attoparsec.Text
-import Data.Void
 
 runDay :: Bool -> String -> IO ()
 runDay = R.runDay inputParser partA partB
@@ -24,20 +19,38 @@ runDayPartB :: String -> IO OutputB
 runDayPartB = R.runDayPart inputParser partB
 
 ------------ PARSER ------------
-inputParser ::Parser Input
-inputParser = error "Not implemented yet!"
+inputParser :: Parser Input
+inputParser = decimal `sepBy` char ','
 
 ------------ TYPES ------------
-type Input = Void
+type Input = [Int]
 
-type OutputA = Void
+type OutputA = Int
 
-type OutputB = Void
+type OutputB = Int
+
+------------ HELPERS ------------
+solve :: Int -> [Int] -> Int
+solve target xs =
+  go (last xs) (length xs + 1) $ Map.fromList (zip xs (map (\x -> [x]) [1 ..]))
+  where
+    alterTurn :: a -> Maybe [a] -> Maybe [a]
+    alterTurn x Nothing = Just [x]
+    alterTurn x (Just xs) = Just $ take 4 (x : xs)
+    go :: Int -> Int -> Map Int [Int] -> Int
+    go prev turn mem
+      | turn == target + 1 = prev
+      | Map.member prev mem && length (mem Map.! prev) == 1 =
+        go 0 (turn + 1) (Map.alter (alterTurn turn) 0 mem)
+      | Map.member prev mem && length (mem Map.! prev) > 1 =
+        let val = (head (mem Map.! prev) - (mem Map.! prev) !! 1)
+         in go val (turn + 1) (Map.alter (alterTurn turn) val mem)
+      | otherwise = go 0 (turn + 1) (Map.alter (alterTurn turn) 0 mem)
 
 ------------ PART A ------------
 partA :: Input -> OutputA
-partA = error "Not implemented yet!"
+partA = solve 2020
 
 ------------ PART B ------------
 partB :: Input -> OutputB
-partB = error "Not implemented yet!"
+partB = solve 30000000
